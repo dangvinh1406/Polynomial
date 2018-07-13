@@ -1,6 +1,7 @@
 #define ERROR 0.001
 #include <iomanip>
-#include <math.h>
+#include <cstdlib>
+#include <cmath>
 #include <sstream>
 #include <iostream>
 using namespace std;
@@ -329,7 +330,7 @@ public:
 		}
 		return a;
 	};
-	friend Polynomial gcd(Polynomial a,Polynomial b){
+	static Polynomial gcd(Polynomial a,Polynomial b){
 		Polynomial r,res;
 		while(!(r.isZero())){
 			res=r;
@@ -348,7 +349,7 @@ public:
 			res=res*(float(1)/(res.p[res.deg]));
 		return res;
 	};
-	friend Polynomial *eap(Polynomial a,Polynomial b){
+	static Polynomial *eap(Polynomial a,Polynomial b){
 		Polynomial r,res; 
 		int n=a.deg;
 		int i=0;
@@ -374,7 +375,7 @@ public:
 		result[i]=res;
 		return result;
 	};
-	friend Polynomial tep(Polynomial q,float x){
+	static Polynomial tep(Polynomial q,float x){
 		int n=0;
 		while(n<=q.deg){
 			for(int i=q.deg-1;i>=n;i--){
@@ -384,7 +385,7 @@ public:
 		}
 		return q;
 	};
-	friend float **htp(Polynomial q,const float &x){
+	static float **htp(Polynomial q,const float &x){
 		int n=0;
 		float **p=new float*[q.deg+2];
 		for(int i=0;i<=q.deg+1;i++)
@@ -475,7 +476,8 @@ public:
 	};
 	void set(Polynomial &a){
 		int k=-1;
-		k=search(a.getName());
+		string name=a.getName();
+		k=search(name);
 		if(k==-1){
 			if(n<50){
 				pl[n]=a;
@@ -505,7 +507,7 @@ public:
 		}
 		return -1;
 	}; 
-	friend int operators(const char &c){
+	static int operators(const char &c){
 		if(c=='(')
 			return -2;
 		if(c==')')
@@ -522,7 +524,7 @@ public:
 			return -8;
 		return -1;
 	};
-	friend bool compareOpe(const int &ope1,const int &ope2){
+	static bool compareOpe(const int &ope1,const int &ope2){
 		int h1=0,h2=0;
 		if(ope1==-6||ope1==-7||ope1==-8)
 			h1=2;
@@ -537,7 +539,7 @@ public:
 		else
 			return false;//ope2 lower or equal ope1
 	};
-	friend bool transOpeNum(Polynomial &left,Polynomial &right,const int &ope){
+	static bool transOpeNum(Polynomial &left,Polynomial &right,const int &ope){
 		if(ope==-4)
 			left=left+right;
 		if(ope==-5)
@@ -583,7 +585,7 @@ public:
 			return -1;//unknown first argument 
 		if(a2==-1)
 			return -2;//unknown second argument 
-		ans=gcd(pl[a1],pl[a2]);
+		ans=Polynomial::gcd(pl[a1],pl[a2]);
 		if((ans.getName()).compare(NA)==0)
 			return -3;//N/A
 		return 1;
@@ -616,11 +618,11 @@ public:
 		if(a2==-1)
 			return -2;//unknown second argument 
 		m=pl[a1].getDeg();
-		ans=gcd(pl[a1],pl[a2]);
+		ans=Polynomial::gcd(pl[a1],pl[a2]);
 		if((ans.getName()).compare(NA)==0)
 			return -3;//N/A
 		else
-			re=eap(pl[a1],pl[a2]);
+			re=Polynomial::eap(pl[a1],pl[a2]);
 		return 1;
 	};
 	int testTep(string &la,Polynomial &ans,float &x){
@@ -658,7 +660,7 @@ public:
 		a1=search(arg1);
 		if(a1==-1)
 			return -1;//unknown first argument 
-		ans=tep(pl[a1],a2);
+		ans=Polynomial::tep(pl[a1],a2);
 		x=a2;
 		return 1;
 	};
@@ -697,7 +699,7 @@ public:
 		a1=search(arg1);
 		if(a1==-1)
 			return -1;//unknown first argument 
-		mat=htp(pl[a1],a2);
+		mat=Polynomial::htp(pl[a1],a2);
 		x=a2;
 		m=pl[a1].getDeg()+2;
 		return 1;
@@ -743,13 +745,13 @@ public:
 					}
 					else{
 						exp[j]=k;
-						exp[j+1]=operators(la[i]);
+						exp[j+1]=PList::operators(la[i]);
 						j=j+2;
 						pol="";
 					}
 				}
 				else{
-					exp[j]=operators(la[i]);
+					exp[j]=PList::operators(la[i]);
 					j++;
 				}
 			}

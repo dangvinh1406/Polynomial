@@ -1,12 +1,11 @@
 #include "Polynomial.h"
 #include <sstream>
-#include <conio.h>
 #include <iostream>
 #include <stdlib.h>
 using namespace std;
 string answer="ans";
 
-void main(){
+int main(){
 	cout<<endl;
 	cout<<" ****** ****** **  **     * ***    ** ****** ***     ** **    **    **    "<<endl;
 	cout<<" **  ** **  ** **   **   *  ****   ** **  ** ****   *** **   ****   **    "<<endl;
@@ -41,7 +40,8 @@ void main(){
 		case -1:
 			break;
 		case -2:
-			system("cls");break;
+			system("clear");
+			break;
 		case -3:{
 			PList *del=l;
 			l=new PList();
@@ -343,6 +343,5 @@ void main(){
 			}
 		}
 	}
-	cout<<" Press any key to exit.";
-	_getch();
+	return 0;
 }
